@@ -31,7 +31,7 @@ export async function POST(req: NextRequest) {
 
     // These coordinates are guesses and will likely need adjustment.
     coverPage.drawText(submittedBy, {
-      x: 464.80,
+      x: 300,
       y: 457.40,
       font,
       size: textSize,
