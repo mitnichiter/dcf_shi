@@ -39,18 +39,18 @@ export async function POST(req: NextRequest) {
     });
 
     coverPage.drawText(registerNumber, {
-      x: 464.80,
-      y: 418.40,
+      x: 310,
+      y: 270,
       font,
       size: textSize,
       color: textColor,
     });
 
     const groupMembersLines = groupMembers.split('\n');
-    let yPosition = 373.40;
+    let yPosition = 250;
     for (const line of groupMembersLines) {
       coverPage.drawText(line, {
-        x: 464.80,
+        x: 310,
         y: yPosition,
         font,
         size: textSize,
