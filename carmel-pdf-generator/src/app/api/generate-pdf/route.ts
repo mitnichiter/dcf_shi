@@ -26,13 +26,13 @@ export async function POST(req: NextRequest) {
     pdfDoc.addPage(coverPage);
 
     const font = await pdfDoc.embedFont(StandardFonts.TimesRoman);
-    const textSize = 12;
+    const textSize = 14;
     const textColor = rgb(0, 0, 0);
 
     // These coordinates are guesses and will likely need adjustment.
     coverPage.drawText(submittedBy, {
       x: 310,
-      y: 300,
+      y: 290,
       font,
       size: textSize,
       color: textColor,
