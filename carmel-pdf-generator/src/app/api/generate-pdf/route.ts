@@ -40,14 +40,14 @@ export async function POST(req: NextRequest) {
 
     coverPage.drawText(registerNumber, {
       x: 310,
-      y: 265,
+      y: 260,
       font,
       size: textSize,
       color: textColor,
     });
 
     const groupMembersLines = groupMembers.split('\n');
-    let yPosition = 245;
+    let yPosition = 235;
     for (const line of groupMembersLines) {
       coverPage.drawText(line, {
         x: 310,
