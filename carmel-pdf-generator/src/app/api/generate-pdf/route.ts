@@ -31,26 +31,26 @@ export async function POST(req: NextRequest) {
 
     // These coordinates are guesses and will likely need adjustment.
     coverPage.drawText(submittedBy, {
-      x: 150,
-      y: 400,
+      x: 464.80,
+      y: 457.40,
       font,
       size: textSize,
       color: textColor,
     });
 
     coverPage.drawText(registerNumber, {
-      x: 150,
-      y: 380,
+      x: 464.80,
+      y: 418.40,
       font,
       size: textSize,
       color: textColor,
     });
 
     const groupMembersLines = groupMembers.split('\n');
-    let yPosition = 360;
+    let yPosition = 373.40;
     for (const line of groupMembersLines) {
       coverPage.drawText(line, {
-        x: 150,
+        x: 464.80,
         y: yPosition,
         font,
         size: textSize,
