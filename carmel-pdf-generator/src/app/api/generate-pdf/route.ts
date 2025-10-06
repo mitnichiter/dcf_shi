@@ -12,8 +12,8 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
     }
 
-    const coverPath = path.resolve('./public', 'cover_template.pdf');
-    const reportPath = path.resolve('./public', 'main_report.pdf');
+    const coverPath = path.join(process.cwd(), 'public', 'cover_template.pdf');
+    const reportPath = path.join(process.cwd(), 'public', 'main_report.pdf');
 
     const coverBytes = await fs.readFile(coverPath);
     const reportBytes = await fs.readFile(reportPath);
