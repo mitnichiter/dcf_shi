@@ -40,7 +40,7 @@ export async function POST(req: NextRequest) {
 
     coverPage.drawText(registerNumber, {
       x: 310,
-      y: 260,
+      y: 263,
       font,
       size: textSize,
       color: textColor,
