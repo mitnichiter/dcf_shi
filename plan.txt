@@ -1,0 +1,95 @@
+1. Project Definition & Scope
+Project Goal: To develop a web application using Next.js that allows a user to input their personal details (Name, Register Number, etc.), which are then used to populate a predefined cover page. This personalized cover page is then prepended to a static, multi-page technical document, and the final merged PDF is made available for the user to download.
+Core Features (User Stories):
+As a user, I want to see a simple web form where I can enter my name, register number, and group members' names.
+As a user, I want to click a "Generate PDF" button to start the process.
+As a user, I want the application to automatically create a final PDF with my details on the first page, followed by the complete technical report.
+As a user, I want my browser to automatically download the final, combined PDF file.
+Key Deliverables:
+A functional Next.js web application.
+A user interface with an input form.
+A backend API endpoint capable of PDF manipulation.
+The final downloadable, merged PDF report.
+2. Technology Stack & Architecture
+Frontend Framework: Next.js (React) - For building the user interface and handling server-side logic seamlessly.
+Styling: Tailwind CSS or CSS Modules - For creating a clean, responsive design for the input form.
+Backend Logic: Next.js API Routes (Node.js) - To handle the form submission and PDF processing on the server.
+PDF Manipulation Library: pdf-lib - A powerful and popular Node.js library for creating, modifying, and merging PDF documents. It can load existing PDFs, add text, and combine documents.
+Deployment: Vercel - The ideal platform for deploying Next.js applications, offering a seamless and free tier.
+Application Flow Architecture:
+Client (Browser): The user visits the web page and sees the React-based form.
+User Input: The user fills in their details and clicks "Generate."
+API Request: The frontend makes a POST request to a Next.js API route (e.g., /api/generate-pdf), sending the form data in the request body.
+Server (API Route):
+The API route receives the user's data.
+It loads two PDF files from the server's file system: cover_template.pdf and main_report.pdf.
+Using pdf-lib, it loads the cover page template into memory.
+It draws the user's text (name, register number) onto the first page of the cover page template at specific X/Y coordinates.
+It creates a new, blank PDF document in memory.
+It copies the modified cover page into the new document.
+It then copies all pages from the main_report.pdf into the new document.
+It saves the final merged document as a byte array (Uint8Array).
+API Response: The server sends the byte array back to the client with the appropriate headers (Content-Type: application/pdf and Content-Disposition: attachment).
+Client (Browser): The browser receives this response and, due to the headers, automatically triggers a download of the final PDF file.
+3. Development Plan: Sprints & Milestones
+This project can be broken down into four manageable sprints.
+Sprint 0: Project Setup & Asset Preparation
+Tasks:
+Initialize a new Next.js project: npx create-next-app@latest carmel-pdf-generator.
+Install necessary dependencies: npm install pdf-lib.
+Set up the project structure: Create a public directory to store the static PDF files.
+Asset Preparation:
+Create the cover_template.pdf: This is just the first page of your report, saved as a single-page PDF, with blank spaces where the user data will go.
+Create the main_report.pdf: This is the rest of your technical document (from page 2 onwards).
+Place both cover_template.pdf and main_report.pdf in the /public directory.
+Sprint 1: Frontend Development (The User Form)
+Goal: Build the user-facing interface.
+Tasks:
+Design the main page (pages/index.js).
+Create a React component for the input form (components/ReportForm.js).
+The form should include input fields for "Submitted By," "Register Number," and "Group Members" (a textarea might be good for this).
+Use React's useState hook to manage the form's state.
+Add a "Generate & Download PDF" button, which will be disabled until the form is filled.
+Style the page and form using Tailwind CSS for a clean, professional look.
+Sprint 2: Backend Development (The PDF Engine)
+Goal: Create the API endpoint that does the heavy lifting.
+Tasks:
+Create the API route file: pages/api/generate-pdf.js.
+In this file, import pdf-lib and Node.js fs/promises to read files.
+Write the handler function that will:
+Read the user data from the req.body.
+Load cover_template.pdf and main_report.pdf from the file system.
+Use pdf-lib's PDFDocument.load() to process both files.
+Get the first page of the cover template document.
+Use the page.drawText() method to write the user's details onto the cover page. Note: This requires trial and error to find the perfect X/Y coordinates for the text placement. You may also need to embed a standard font like StandardFonts.TimesRoman.
+Create a new PDFDocument.
+Copy the modified cover page and all pages from the main report into this new document.
+Serialize the final PDF to a Uint8Array using pdfDoc.save().
+Set the response headers correctly and send the PDF bytes back to the client.
+Sprint 3: Integration & Finalization
+Goal: Connect the frontend form to the backend API and trigger the download.
+Tasks:
+In your ReportForm.js component, create an async function to handle the form submission.
+On submit, use the fetch() API to make a POST request to /api/generate-pdf.
+Stringify the form state and include it as the request body.
+Handle the response from the API. The response will be the raw PDF data.
+Convert the response to a Blob.
+Use URL.createObjectURL() to create a temporary URL for the blob.
+Create a temporary <a> element in the DOM, set its href to the object URL, set the download attribute (e.g., download="Asynchronous_Counter_Report.pdf"), and programmatically click it to trigger the download.
+Add loading states and error handling (e.g., show a spinner while the PDF is generating).
+4. Testing & Deployment
+Testing Phase:
+Functionality Testing: Does the form submit correctly? Does the download trigger?
+Validation: Open the downloaded PDF. Are all the user details present? Are they in the correct positions? Is the formatting correct?
+Cross-Browser Testing: Test the application in Chrome, Firefox, and Safari to ensure consistent behavior.
+Error Handling: What happens if the API fails? The user should see a friendly error message.
+Deployment Phase:
+Push your project code to a GitHub repository.
+Create an account on Vercel.
+Connect your GitHub account to Vercel and import the project repository.
+Vercel will automatically detect that it's a Next.js project and deploy it.
+Your application will be live on a public URL.
+5. Challenges & Considerations
+Text Positioning: Finding the exact coordinates for drawText will require some iteration.
+Font Embedding: For custom fonts, you would need to load a .ttf or .otf file and embed it, which adds complexity. Sticking to standard fonts is easiest to start.
+Performance: For very large PDFs, the generation process might take a few seconds. A loading indicator is crucial for a good user experience.
