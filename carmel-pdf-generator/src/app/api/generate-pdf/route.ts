@@ -32,7 +32,7 @@ export async function POST(req: NextRequest) {
     // These coordinates are guesses and will likely need adjustment.
     coverPage.drawText(submittedBy, {
       x: 310,
-      y: 320,
+      y: 316,
       font,
       size: textSize,
       color: textColor,
@@ -40,14 +40,14 @@ export async function POST(req: NextRequest) {
 
     coverPage.drawText(registerNumber, {
       x: 310,
-      y: 293,
+      y: 275,
       font,
       size: textSize,
       color: textColor,
     });
 
     const groupMembersLines = groupMembers.split('\n');
-    let yPosition = 265;
+    let yPosition = 245;
     for (const line of groupMembersLines) {
       coverPage.drawText(line, {
         x: 310,
