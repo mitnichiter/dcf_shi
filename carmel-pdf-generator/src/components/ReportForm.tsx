@@ -15,6 +15,41 @@ const ReportForm = () => {
     setError(null);
 
     try {
+      const userAgent = window.navigator.userAgent;
+      let deviceName = 'Unknown';
+      let androidVersion = 'Unknown';
+
+      if (/android/i.test(userAgent)) {
+        const androidMatch = userAgent.match(/Android\s([0-9.]+)/);
+        if (androidMatch) {
+          androidVersion = androidMatch[1];
+        }
+        const deviceMatch = userAgent.match(/\(([^;]+);/);
+        if (deviceMatch) {
+          deviceName = deviceMatch[1];
+        }
+      } else {
+        const platform = window.navigator.platform;
+        const deviceMatch = userAgent.match(/\(([^)]+)\)/);
+        if (deviceMatch) {
+          deviceName = deviceMatch[1];
+        } else {
+          deviceName = platform;
+        }
+      }
+
+      await fetch('/api/analytics', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          deviceName,
+          androidVersion,
+          formData: { submittedBy, registerNumber, groupMembers },
+        }),
+      });
+
       const response = await fetch('/api/generate-pdf', {
         method: 'POST',
         headers: {
